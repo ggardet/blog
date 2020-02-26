@@ -59,16 +59,16 @@ GENERAL_HW_CMD_DIR = /var/lib/openqa/share/tests/opensuse/data/generalhw_scripts
 
 # Worker 1 specific config
 [1]
-# Most config moved to openQA `MACHINE` defintion for now, due to https://progress.opensuse.org/issues/63766
-#FLASHER_IP = 192.168.0.18
-#GENERAL_HW_FLASH_ARGS = /var/lib/openqa/factory/hdd/%HDD_1% %FLASHER_IP%:/tmp/
-#GENERAL_HW_FLASH_CMD = flash_usb_otg.sh
-#GENERAL_HW_POWEROFF_CMD = power_off_tenma.sh
-#GENERAL_HW_POWERON_CMD = power_on_tenma.sh
-#GENERAL_HW_SOL_ARGS = %FLASHER_IP%
-#GENERAL_HW_SOL_CMD = get_sol_over_SSH.sh
-#SUT_IP = 192.168.0.44
-# keep ability to run qemu test but add a WORKLER_CLASS specific to the current openQA machine
+# Config below is SUT/SUT-companion specific and must not be shared across multiple workers
+FLASHER_IP = 192.168.0.18
+GENERAL_HW_FLASH_ARGS = 192.168.0.18:/tmp/
+GENERAL_HW_FLASH_CMD = flash_usb_otg.sh
+GENERAL_HW_POWEROFF_CMD = power_off_tenma.sh
+GENERAL_HW_POWERON_CMD = power_on_tenma.sh
+GENERAL_HW_SOL_ARGS = 192.168.0.18
+GENERAL_HW_SOL_CMD = get_sol_over_SSH.sh
+SUT_IP = 192.168.0.44
+# keep ability to run qemu test, but add a WORKLER_CLASS specific to the current openQA 'MACHINE'
 WORKER_CLASS = qemu_aarch64,generalhw_RPi3B
 WORKER_HOSTNAME = 192.168.0.28
 ```
@@ -82,28 +82,11 @@ On the openQA webUI, you need to create a new machine `RPi3B` with the required 
 ```
 BACKEND=generalhw
 EXCLUDE_MODULES=bootloader_uefi,diskusage,hostname,yast2_lan,console_reboot,gpt_ptable,sshd,ssh_cleanup,pam,yast2_lan_device_settings
-FLASHER_IP=192.168.0.18
-GENERAL_HW_FLASH_ARGS=/var/lib/openqa/factory/hdd/%HDD_1% %FLASHER_IP%:/tmp/
-GENERAL_HW_FLASH_CMD=flash_usb_otg.sh
-GENERAL_HW_POWEROFF_CMD=power_off_tenma.sh
-GENERAL_HW_POWERON_CMD=power_on_tenma.sh
-GENERAL_HW_SOL_ARGS=%FLASHER_IP%
-GENERAL_HW_SOL_CMD=get_sol_over_SSH.sh
 SERIALDEV=ttyS0
 SSH_XTERM_WAIT_SUT_ALIVE_TIMEOUT=240
-SUT_IP=192.168.0.44
 TIMEOUT_SCALE=2
 VNC_TYPING_LIMIT=7
 WORKER_CLASS=generalhw_RPi3B
 _COMMENT=GENERAL_HW_* should be defined in worker config. Only GENERAL_HW_CMD_DIR for now due to https://github.com/os-autoinst/openQA/pull/599 the other will be moved later to worker config to be able to scale. See: https://progress.opensuse.org/issues/63766
 
 ```
-
-
-## TODO / Known limitations
-
-What has been overlooked so far since only one worker was being used with a single SUT/SUT-companion and a single openQA worker, is:
-	an openQA machine can only be bind to a single worker/SUT/SUT-companion system, so it does not scale. 
-	To fix that, we need to:
-		* have each single SUT/SUT-companion handled by only one worker (which can also run qemu_aarch64 tests when not busy on generalhw)
-		* AND leave the SUT/SUT-companion definition in the worker config (SUT_IP, FLASHER_IP, POWER_ON, POWER_OFF), but it is not possible atm, see: [https://progress.opensuse.org/issues/63766](https://progress.opensuse.org/issues/63766)
