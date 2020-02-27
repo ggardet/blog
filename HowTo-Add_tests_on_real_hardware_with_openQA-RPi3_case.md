@@ -12,18 +12,18 @@ The SUT-companion is used to expose USB storage to SUT and grab serial line from
 
 ![alt text](https://paste.opensuse.org/view/raw/13032363 "Hardware setup")
 
-Hardware list:
+**Hardware list**:
 
-  * SUT: here, Raspberry Pi 3 with a regular power supply
-  * SUT-companion (flasher): here, SabreLite with a regular power supply
-  * USB to TTL serial cable to grab serial line from SUT
-  * USB/serial cable to grab serial line from SUT-companion (optionnal, but can help if system is not responding on Network anymore)
-  * USB cable to connect SUT (USB host) and SUT-companion (USB device)
-  * uSD card for the Raspberry Pi to hold firmware due to [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322) - In the end, should only requires bootcode.bin to chain load USB boot.
-  * uSD card for SUT-companion with JeOS running on it.
-  * Fast external storage for SUT-companion to hold the image to be exposed on USB (to avoid to kill the uSD card quickly).
-  * 2 Smart PowerPlug / PowerStrip: to power on/off the SUT (and the SUT-companion).
-  * 2 Ethernet Cables to connect SUT and SUT-companion to a switch
+  * **SUT**: here, Raspberry Pi 3 with a regular power supply
+  * **SUT-companion** (flasher): here, SabreLite with a regular power supply
+  * **USB to TTL serial cable** to grab serial line from SUT
+  * **USB/serial cable** to grab serial line from SUT-companion (optionnal, but can help if system is not responding on Network anymore)
+  * **USB cable** to connect SUT (USB host) and SUT-companion (USB device)
+  * **uSD card** for the Raspberry Pi to hold firmware due to [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322) - In the end, should only requires bootcode.bin to chain load USB boot.
+  * **uSD card** for SUT-companion with JeOS running on it.
+  * **Fast external storage** for SUT-companion to hold the image to be exposed on USB (to avoid to kill the uSD card quickly).
+  * **2 Smart PowerPlug / PowerStrip**: to power on/off the SUT (and the SUT-companion).
+  * **2 Ethernet Cables** to connect SUT and SUT-companion to a switch
 
 Now you have all the hardware parts, plug them as shown above on the diagram.
 
@@ -41,7 +41,7 @@ Note: Currently, it uses 'root' user on SUT, but we should probably use a specif
 
 ### SUT
 
-Here, the Raspberry Pi 3 B cannot boot from USB emulation (see [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322)), so you need to format the uSD card in FAT and copy the firmware files (bootcode.bin and ) from raspberrypi-firmware RPM package. 
+Here, the Raspberry Pi 3 B cannot boot from USB emulation (see [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322)), so you need to format the uSD card in FAT and copy the firmware files (bootcode.bin, fixup.dat/fixup4.dat and start.elf/start4.elf) from raspberrypi-firmware RPM package.
 DO NOT include the configuration files, nor u-boot!
 
 ### Worker setup
@@ -77,7 +77,7 @@ You will probably need to update the apparmor profile of openQA worker, dependin
 
 ### openQA webUI
 
-On the openQA webUI, you need to create a new machine `RPi3B` with the required settings (update IPs):
+On the openQA webUI, you need to create a new machine `RPi3B` with the required settings:
 
 ```
 BACKEND=generalhw
@@ -90,3 +90,5 @@ WORKER_CLASS=generalhw_RPi3B
 _COMMENT=GENERAL_HW_* should be defined in worker config. Only GENERAL_HW_CMD_DIR for now due to https://github.com/os-autoinst/openQA/pull/599 the other will be moved later to worker config to be able to scale. See: https://progress.opensuse.org/issues/63766
 
 ```
+
+**Now, you can schedule some tests from openQA on this new machine.**
