@@ -89,7 +89,7 @@ SSH_XTERM_WAIT_SUT_ALIVE_TIMEOUT=240
 TIMEOUT_SCALE=2
 VNC_TYPING_LIMIT=7
 WORKER_CLASS=generalhw_RPi3B
-_COMMENT=GENERAL_HW_* should be defined in worker config. Only GENERAL_HW_CMD_DIR for now due to https://github.com/os-autoinst/openQA/pull/599 the other will be moved later to worker config to be able to scale. See: https://progress.opensuse.org/issues/63766
+_COMMENT=GENERAL_HW_* are defined in worker config.
 
 ```
 
