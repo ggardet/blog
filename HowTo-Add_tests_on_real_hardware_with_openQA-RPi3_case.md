@@ -22,7 +22,7 @@ The SUT-companion is used to expose USB storage to SUT and grab serial line from
   * **uSD card** for the Raspberry Pi to hold firmware due to [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322) - In the end, should only requires bootcode.bin to chain load USB boot.
   * **uSD card** for SUT-companion with JeOS running on it.
   * **Fast external storage** for SUT-companion to hold the image to be exposed on USB (to avoid to kill the uSD card quickly).
-  * **2 Smart PowerPlug / PowerStrip**: to power on/off the SUT (and the SUT-companion).
+  * **2 Smart PowerPlug / PowerStrip**: to power on/off the SUT (and the SUT-companion). I used a [TP-Link HS100](https://www.tp-link.com/en/home-networking/smart-plug/hs100/) with [python3-kasa package](https://build.opensuse.org/package/show/devel:languages:python/python-kasa). I also used a Tenma 72-2535 which is a programmable bench power supply, with [python tenma-serial](https://github.com/kxtells/tenma-serial) software.
   * **2 Ethernet Cables** to connect SUT and SUT-companion to a switch
 
 Now you have all the hardware parts, plug them as shown above on the diagram.
@@ -63,8 +63,10 @@ GENERAL_HW_CMD_DIR = /var/lib/openqa/share/tests/opensuse/data/generalhw_scripts
 FLASHER_IP = 192.168.0.18
 GENERAL_HW_FLASH_ARGS = 192.168.0.18:/tmp/
 GENERAL_HW_FLASH_CMD = flash_usb_otg.sh
-GENERAL_HW_POWEROFF_CMD = power_off_tenma.sh
-GENERAL_HW_POWERON_CMD = power_on_tenma.sh
+GENERAL_HW_POWEROFF_CMD = power_off_kasa.sh
+GENERAL_HW_POWEROFF_ARGS = 192.168.0.100
+GENERAL_HW_POWERON_CMD = power_on_kasa.sh
+GENERAL_HW_POWERON_ARGS = 192.168.0.100
 GENERAL_HW_SOL_ARGS = 192.168.0.18
 GENERAL_HW_SOL_CMD = get_sol_over_SSH.sh
 SUT_IP = 192.168.0.44
