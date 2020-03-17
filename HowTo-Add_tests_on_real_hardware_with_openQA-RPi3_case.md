@@ -33,7 +33,7 @@ Now you have all the hardware parts, plug them as shown above on the diagram.
 ### SUT-companion
 
 Once you have installed an openSUSE image on your device (here, JeOS-sabrelite), you need to configure it.
-First, please create ` /var/lib/openqa/share/` folder and mount nfs share from openQA server. See: [http://open.qa/docs/#_configuring_remote_workers](http://open.qa/docs/#_configuring_remote_workers)
+First, please install required software: `qemu-tools`. Then, create `/var/lib/openqa/share/` folder and mount nfs share from openQA server. See: [http://open.qa/docs/#_configuring_remote_workers](http://open.qa/docs/#_configuring_remote_workers)
 That way, you will have access to files used later (scripts, etc.).
 
 Note: Currently, it uses 'root' user on SUT, but we should probably use a specific non-root user, with some additional permissions to mount images on USB to limit security risks.
