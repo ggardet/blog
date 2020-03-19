@@ -41,8 +41,13 @@ Note: Currently, it uses 'root' user on SUT, but we should probably use a specif
 
 ### SUT
 
-Here, the Raspberry Pi 3 B cannot boot from USB emulation (see [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322)), so you need to format the uSD card in FAT and copy the firmware files (bootcode.bin, fixup.dat/fixup4.dat and start.elf/start4.elf) from raspberrypi-firmware RPM package.
-DO NOT include the configuration files, nor u-boot!
+Here, the Raspberry Pi 3 B cannot boot from USB emulation (see [https://github.com/raspberrypi/firmware/issues/1322](https://github.com/raspberrypi/firmware/issues/1322)), so you need to format the uSD card in FAT and copy the `raspberrypi-firmware` files (`bootcode.bin`, `fixup.dat`/`fixup4.dat` and `start.elf/start4.elf`), `raspberrypi-firmware-config` (`config.txt`), `raspberrypi-firmware-dt` (`*.dtb and overlays/*.dtbo`) and `U-Boot` files (`u-boot.bin`, `ubootconfig.txt`).
+DO NOT include `grub`!
+
+As this should match what is in your image to make sure you are testing all the boot components as well, you have 2 solutions:
+
+* Use an openQA workaround to flash SD card before starting real tests. This is the solution currently in use, but this is fragile since you may break the boot and should fix the sd card data manually.
+* Or you can use hardware to flash the SD card from host, using [SDWire](https://wiki.tizen.org/SDWire) It will require to update the flash script.
 
 ### Worker setup
 
