@@ -52,15 +52,27 @@ As this should match what is in your image to make sure you are testing all the 
 ### Worker setup
 
 You need to setup an openQA worker as usual, but with some additional steps.
+
 First, you need to make sure `icewm-default` and `xterm-console` packages are installed as `generalhw` backend requires them.
-Then, create SSH keys for user used to run tests (_openqa-worker if run from openQA).
-You need to configure a password-less SSH access from openQA worker to SUT-companion. For this, as user used to run tests (_openqa-worker if run from openQA) execute the following command from openQA worker `ssh-copy-id -i ~/.ssh/id_rsa.pub root@<SUT_IP>` (replace <SUT_IP> by the actual SUT IP adress.)
-In the worker config file `/etc/openqa/workers.ini`, add:
+
+Then, create SSH keys for user used to run tests (`_openqa-worker` if run from openQA).
+`_openqa-worker` is a bit special since it is not a regular user, so, you can use the following command lines to create ssh keys as needed:
+```
+sudo mkdir /var/lib/empty/.ssh
+sudo chown _openqa-worker:nogroup /var/lib/empty/.ssh
+sudo su _openqa-worker
+ssh-keygen
+exit
+```
+
+Now, you need to configure a password-less SSH access from openQA worker to SUT-companion. For this, as user used to run tests (`_openqa-worker` if run from openQA) execute the following command from openQA worker `ssh-copy-id -i ~/.ssh/id_rsa.pub root@<SUT_IP>` (replace <SUT_IP> by the actual SUT IP adress.)
+
+Finally, in the worker config file `/etc/openqa/workers.ini`, add:
 
 ```
 [global]
-# https://github.com/os-autoinst/openQA/pull/599
 GENERAL_HW_CMD_DIR = /var/lib/openqa/share/tests/opensuse/data/generalhw_scripts
+WORKER_HOSTNAME = 192.168.0.30
 
 # Worker 1 specific config
 [1]
@@ -76,11 +88,11 @@ GENERAL_HW_SOL_ARGS = 192.168.0.18
 GENERAL_HW_SOL_CMD = get_sol_over_SSH.sh
 SUT_IP = 192.168.0.44
 # keep ability to run qemu test, but add a WORKLER_CLASS specific to the current openQA 'MACHINE'
-WORKER_CLASS = qemu_aarch64,generalhw_RPi3B
-WORKER_HOSTNAME = 192.168.0.28
+WORKER_CLASS = qemu_aarch64,generalhw_RPi3,generalhw_RPi3B
 ```
 
-You will probably need to update the apparmor profile of openQA worker, depending on the scripts you will use to power on/off and to flash the system.
+You will probably need to update the apparmor profile of `/usr/share/openqa/script/worker`, depending on the scripts you will use to power on/off and to flash the system. An easy way to proceed, is to switch AppArmor to complain mode.
+
 
 ### openQA webUI
 
