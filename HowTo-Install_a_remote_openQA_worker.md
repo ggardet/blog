@@ -13,6 +13,24 @@ Create a new set of API keys from (https://openqa.opensuse.org/api_keys)[openQA 
 
 With a remote worker, you cannot NFS mount `/var/lib/openqa/cache` from the openQA server as only the openQA API is reachable. Instead, you must use the (http://open.qa/docs/#_asset_caching)[cache service] described here:
 
+Update `/etc/openqa/workers.ini` with:
+
+```
+[global]
+HOST = http://openqa.opensuse.org http://myotheropenqa.org
+CACHEDIRECTORY = /var/lib/openqa/cache
+CACHELIMIT = 50 # GB, default is 50.
+CACHEWORKERS = 5 # Number of parallel cache minion workers, defaults to 5
+```
+
+Update `/etc/openqa/client.conf` with the key generated from webui:
+
+```
+[openqa.opensuse.org]
+key = 0123456789ABCDEF
+secret = FEDCBA9876543210
+```
+
 Start and enable the Cache Service:
 ```
 sudo systemctl enable --now openqa-worker-cacheservice
@@ -21,16 +39,6 @@ sudo systemctl enable --now openqa-worker-cacheservice
 Enable and start the Cache Worker:
 ```
 sudo systemctl enable --now openqa-worker-cacheservice-minion
-```
-
-Update `/etc/openqa/workers.ini` with:
-
-```
-[global]
-HOST=http://openqa.opensuse.org # Add any other host here
-CACHEDIRECTORY = /var/lib/openqa/cache
-CACHELIMIT = 50 # GB, default is 50.
-CACHEWORKERS = 5 # Number of parallel cache minion workers, defaults to 5
 ```
 
 Now you can restart your worker(s):
