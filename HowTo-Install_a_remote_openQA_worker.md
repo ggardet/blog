@@ -83,6 +83,13 @@ And restart the service:
 sudo systemctl restart cron
 ```
 
+You likely want to stop and disable openQA related services started automatically:
+```
+sudo systemctl disable --now openqa-webui.service
+sudo systemctl disable --now openqa-gru.service
+```
+
+
 ## Enjoy your remote worker
 
 
