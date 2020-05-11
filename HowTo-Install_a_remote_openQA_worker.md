@@ -3,6 +3,27 @@
 openQA workers can be on the same network as openQA webui server, or it can also be in the cloud.
 Here, we will detail specific configurations to setup a remote cloud worker which has access only to the openQA API.
 
+## Install required software
+
+As any other openQA worker, you need to install some packages.
+You likely want to use the latest version of openQA and thus use the binaries from `devel:openQA` and `devel:openQA:Leap:15.1` projects (adjust the URL, if you do not use Leap 15.1):
+```
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/openSUSE_Leap_15.1/devel:openQA.repo
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/Leap:/15.1/openSUSE_Leap_15.1/devel:openQA:Leap:15.1.repo
+```
+
+If you use SLE15-SP1, you need to enable the matching repositories and also PackageHub:
+```
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/SLE_15_SP1/devel:openQA.repo
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/SLE-15/SLE_15_SP1/devel:openQA:SLE-15.repo
+sudo SUSEConnect -p PackageHub/15.1/aarch64
+```
+
+Now, you can install the packages:
+```
+sudo zypper install openQA-worker os-autoinst-distri-opensuse-deps
+```
+
 
 ## Get API keys from openQA webui host
 
@@ -41,10 +62,6 @@ Enable and start the Cache Worker:
 sudo systemctl enable --now openqa-worker-cacheservice-minion
 ```
 
-Now you can restart your worker(s):
-```
-sudo systemctl enable --now openqa-worker@1
-```
 
 ## Workaround for tests and needles
 
@@ -52,7 +69,7 @@ Tests and needles are not part of the cache services, but are hold in GIT reposi
 
 Install required package and run the fetch script a first time.
 ```
-sudo zypper in --no-recommends openQA
+sudo zypper in --no-recommends openQA system-user-wwwrun
 sudo /usr/share/openqa/script/fetchneedles
 ```
 
@@ -60,3 +77,20 @@ Now, add a cron job to fecth tests/needles every minute `/etc/cron.d/fetchneedle
 ```
  -*/1    * * * *  geekotest     env updateall=1 /usr/share/openqa/script/fetchneedles
 ```
+
+And restart the service:
+```
+sudo systemctl restart cron
+```
+
+## Enjoy your remote worker
+
+
+Now you can (re)start your worker(s):
+```
+sudo systemctl enable --now openqa-worker@1
+```
+
+And, your remote worker should be registred on your openQA server. Check the `/admin/workers` page from the openQA webUI.
+
+Enjoy!
