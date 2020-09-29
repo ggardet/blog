@@ -69,7 +69,7 @@ Tests and needles are not part of the cache services, but are hold in GIT reposi
 
 Install required package and run the fetch script a first time.
 ```
-sudo zypper in --no-recommends openQA system-user-wwwrun
+sudo zypper in --no-recommends openQA system-user-wwwrun cron
 sudo /usr/share/openqa/script/fetchneedles
 ```
 
@@ -88,6 +88,32 @@ You likely want to stop and disable openQA related services started automaticall
 sudo systemctl disable --now openqa-webui.service
 sudo systemctl disable --now openqa-gru.service
 ```
+
+## Setup HugePages for aarch64 qemu tests
+With `yast2 bootloader` you can add boot options to setup huge pages (here 2x 1G):
+```
+default_hugepagesz=1G hugepagesz=1G hugepages=2
+```
+
+You also need to fix write permissions for openQA user with `/etc/systemd/system/openqa-hugepages-fix.service`:
+```
+[Unit]
+Description=Systemd service to fix hugepages + qemu ram problems. See https://progress.opensuse.org/issues/53234 for details
+After=dev-hugepages.mount
+After=ovs-vswitchd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/chmod o+w /dev/hugepages/
+
+[Install]
+WantedBy=multi-user.target
+```
+And enable it with:
+```
+sudo systemctl enable openqa-hugepages-fix.service
+```
+And `reboot` your machine.
 
 
 ## Enjoy your remote worker
