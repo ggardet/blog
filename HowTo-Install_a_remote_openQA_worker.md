@@ -6,7 +6,7 @@ Here, we will detail specific configurations to setup a remote cloud worker whic
 ## Install required software
 
 As any other openQA worker, you need to install some packages.
-You likely want to use the latest version of openQA and thus use the binaries from `devel:openQA` and `devel:openQA:Leap:15.1` projects (adjust the URL, if you do not use Leap 15.2):
+You likely want to use the latest version of openQA and thus use the binaries from `devel:openQA` and `devel:openQA:Leap:15.2` projects (adjust the URL, if you do not use Leap 15.2):
 ```
 sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/openSUSE_Leap_15.2/devel:openQA.repo
 sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/Leap:/15.2/openSUSE_Leap_15.2/devel:openQA:Leap:15.2.repo
