@@ -14,7 +14,7 @@ sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/Leap
 
 If you use SLE15-SP2, you need to enable the matching repositories and also PackageHub:
 ```
-sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/SLE_15_SP2_backports/devel:openQA.repo
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/SLE_15_SP2/devel:openQA.repo
 sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/SLE-15/SLE_15_SP2/devel:openQA:SLE-15.repo
 sudo SUSEConnect -p PackageHub/15.2/aarch64
 ```
