@@ -38,7 +38,7 @@ Update `/etc/openqa/workers.ini` with:
 
 ```
 [global]
-HOST = http://openqa.opensuse.org http://myotheropenqa.org
+HOST = https://openqa.opensuse.org http://myotheropenqa.org
 CACHEDIRECTORY = /var/lib/openqa/cache
 CACHELIMIT = 50 # GB, default is 50.
 CACHEWORKERS = 5 # Number of parallel cache minion workers, defaults to 5
