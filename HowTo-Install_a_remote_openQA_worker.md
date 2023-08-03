@@ -6,17 +6,17 @@ Here, we will detail specific configurations to setup a remote cloud worker whic
 ## Install required software
 
 As any other openQA worker, you need to install some packages.
-You likely want to use the latest version of openQA and thus use the binaries from `devel:openQA` and `devel:openQA:Leap:15.3` projects (adjust the URL, if you do not use Leap 15.3):
+You likely want to use the latest version of openQA and thus use the binaries from `devel:openQA` and `devel:openQA:Leap:15.x` projects (adjust the URL, if you do not use Leap 15.x):
 ```
-sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/openSUSE_Leap_15.3/devel:openQA.repo
-sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/Leap:/15.3/openSUSE_Leap_15.3/devel:openQA:Leap:15.3.repo
+sudo zypper ar -f 'https://download.opensuse.org/repositories/devel:/openQA/$releasever/' devel_openQA
+sudo zypper ar -f 'https://download.opensuse.org/repositories/devel:/openQA:/Leap:/$releasever/$releasever/' devel_openQA_Leap
 ```
 
-If you use SLE15-SP3, you need to enable the matching repositories and also PackageHub:
+If you use SLE15-SP5, you need to enable the repositories used for Leap 15.5 and also PackageHub:
 ```
-sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/SLE_15_SP3/devel:openQA.repo
-sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/SLE-15/SLE_15_SP3/devel:openQA:SLE-15.repo
-sudo SUSEConnect -p PackageHub/15.3/aarch64
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA/15.5/devel:openQA.repo
+sudo zypper ar -f https://download.opensuse.org/repositories/devel:/openQA:/Leap:/15.5/15.5/devel:openQA:Leap:15.5.repo
+sudo SUSEConnect -p PackageHub/15.5/aarch64
 ```
 
 Now, you can install the packages:
