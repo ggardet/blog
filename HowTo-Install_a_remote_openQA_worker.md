@@ -80,13 +80,20 @@ Now, add a cron job to fecth tests/needles every minute `/etc/cron.d/fetchneedle
  -*/1    * * * *  geekotest     env updateall=1 /usr/share/openqa/script/fetchneedles
 ```
 
-Fix tests for alp,leap-micro and microos
+Fix tests and needles for alp,leap-micro and microos
 ```
 pushd /var/lib/openqa/share/tests/
 sudo ln -s opensuse alp
 sudo ln -s opensuse leap-micro
 sudo ln -s opensuse microos
 sudo chown -h geekotest:nogroup *
+pushd opensuse/products
+for file in alp microos sle sle-micro; do
+  pushd $file
+  sudo ln -s ../opensuse/needles/
+  popd
+done
+popd
 popd
 ```
 
